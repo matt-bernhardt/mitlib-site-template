@@ -61,3 +61,14 @@ else
     sed -i "s#{{TLS_CERT}}##" "${VVV_PATH_TO_SITE}/provision/vvv-nginx.conf"
     sed -i "s#{{TLS_KEY}}##" "${VVV_PATH_TO_SITE}/provision/vvv-nginx.conf"
 fi
+
+# Local customization
+# Plugins
+noroot wp plugin delete hello
+noroot wp plugin install add-category-to-page black-studio-tinymce-widget contact-form-7 cf7-conditional-fields --activate
+git clone git@github.com:MITLibraries/mitlib-plugin-canary.git ${VVV_PATH_TO_SITE}/public_html/wp-content/plugins/mitlib-plugin-canary
+noroot wp plugin activate mitlib-plugin-canary
+
+# Themes
+noroot wp theme delete twentysixteen twentyseventeen
+noroot wp theme install twentytwelve --activate
