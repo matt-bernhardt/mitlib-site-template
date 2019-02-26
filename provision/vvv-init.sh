@@ -65,10 +65,31 @@ fi
 # Local customization
 # Plugins
 noroot wp plugin delete hello
-noroot wp plugin install add-category-to-page black-studio-tinymce-widget contact-form-7 cf7-conditional-fields --activate
-git clone git@github.com:MITLibraries/mitlib-plugin-canary.git ${VVV_PATH_TO_SITE}/public_html/wp-content/plugins/mitlib-plugin-canary
-noroot wp plugin activate mitlib-plugin-canary
+noroot wp plugin install acf-image-crop-add-on
+noroot wp plugin install acf-location-field-master
+noroot wp plugin install advanced-custom-fields-pro --activate
+noroot wp plugin install add-category-to-pages
+noroot wp plugin install addthis
+noroot wp plugin install advanced-post-types-order
+noroot wp plugin install akismet
+noroot wp plugin install antivirus
+noroot wp plugin install black-studio-tinymce-widget
+noroot wp plugin install category-template-hierarchy
+noroot wp plugin install cf7-conditional-fields
+noroot wp plugin install classic-editor
+noroot wp plugin install cms-tree-page-view
+noroot wp plugin install contact-form-7 --activate
+noroot wp plugin install cpt-onomies
+noroot wp plugin install custom-post-type-ui
+noroot wp plugin install custom-sidebars
+noroot wp plugin install https://github.com/MITLibraries/mitlib-plugin-canary/archive/master.zip --activate
 
 # Themes
-noroot wp theme delete twentysixteen twentyseventeen
 noroot wp theme install twentytwelve --activate
+noroot wp theme delete twentysixteen twentyseventeen twentynineteen
+noroot wp theme install https://github.com/MITLibraries/mitlib-courtyard/archive/1.1.zip
+
+cd ${VVV_SITE_NAME}/public_html/wp-content/themes/mitlib-courtyard/
+npm install
+grunt
+noroot wp theme activate mitlib-courtyard
