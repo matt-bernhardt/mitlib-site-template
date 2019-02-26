@@ -93,3 +93,8 @@ cd ${VVV_SITE_NAME}/public_html/wp-content/themes/mitlib-courtyard/
 npm install
 grunt
 noroot wp theme activate mitlib-courtyard
+
+# Sample content
+cd ~
+git clone https://github.com/WPTRT/theme-unit-test.git
+wp import ~/theme-unit-test/themeunittestdata.wordpress.xml
