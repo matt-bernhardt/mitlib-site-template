@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 # Provision WordPress Stable
 
+echo -e "\n========================================================="
 echo -e "\nCreating MITlib local WordPress..."
+composer --version
+npm --version
+grunt --version
+echo -e "\n========================================================="
 
 # fetch the first host as the primary domain. If none is available, generate a default using the site name
 DOMAIN=`get_primary_host "${VVV_SITE_NAME}".test`
@@ -91,13 +96,13 @@ noroot wp theme install twentytwelve --activate
 noroot wp theme delete twentysixteen twentyseventeen twentynineteen
 
 # Custom themes
-noroot wp theme install https://github.com/MITLibraries/mitlib-courtyard/archive/1.2.0.zip
+noroot wp theme install https://github.com/MITLibraries/mitlib-courtyard/archive/1.3.0-beta1.zip
 cd ${VVV_PATH_TO_SITE}/public_html/wp-content/themes/mitlib-courtyard/
 pwd
 noroot npm install
 noroot grunt
 
-noroot wp theme install https://github.com/MITLibraries/MITlibraries-parent/archive/v1.7.0.zip
+noroot wp theme install https://github.com/MITLibraries/MITlibraries-parent/archive/master.zip
 cd ${VVV_PATH_TO_SITE}/public_html/wp-content/themes/MITlibraries-parent/
 pwd
 noroot npm install
