@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Provision WordPress Stable
 
+echo -e "\nCreating MITlib local WordPress..."
+
 # fetch the first host as the primary domain. If none is available, generate a default using the site name
 DOMAIN=`get_primary_host "${VVV_SITE_NAME}".test`
 SITE_TITLE=`get_config_value 'site_title' "${DOMAIN}"`
@@ -10,7 +12,7 @@ DB_NAME=`get_config_value 'db_name' "${VVV_SITE_NAME}"`
 DB_NAME=${DB_NAME//[\\\/\.\<\>\:\"\'\|\?\!\*-]/}
 
 # Make a database, if we don't already have one
-echo -e "\nCreating FOO database '${DB_NAME}' (if it's not already there)"
+echo -e "\nCreating database '${DB_NAME}' (if it's not already there)"
 mysql -u root --password=root -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME}"
 mysql -u root --password=root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO wp@localhost IDENTIFIED BY 'wp';"
 echo -e "\n DB operations done.\n\n"
@@ -84,17 +86,26 @@ noroot wp plugin install custom-post-type-ui
 noroot wp plugin install custom-sidebars
 noroot wp plugin install https://github.com/MITLibraries/mitlib-plugin-canary/archive/master.zip --activate
 
-# Themes
+# Contrib themes
 noroot wp theme install twentytwelve --activate
 noroot wp theme delete twentysixteen twentyseventeen twentynineteen
-noroot wp theme install https://github.com/MITLibraries/mitlib-courtyard/archive/1.1.zip
 
-cd ${VVV_SITE_NAME}/public_html/wp-content/themes/mitlib-courtyard/
-npm install
-grunt
+# Custom themes
+noroot wp theme install https://github.com/MITLibraries/mitlib-courtyard/archive/1.2.0.zip
+cd ${VVV_PATH_TO_SITE}/public_html/wp-content/themes/mitlib-courtyard/
+pwd
+noroot npm install
+noroot grunt
+
+noroot wp theme install https://github.com/MITLibraries/MITlibraries-parent/archive/v1.7.0.zip
+cd ${VVV_PATH_TO_SITE}/public_html/wp-content/themes/MITlibraries-parent/
+pwd
+noroot npm install
+noroot grunt
+
 noroot wp theme activate mitlib-courtyard
 
 # Sample content
 cd ~
-git clone https://github.com/WPTRT/theme-unit-test.git
-wp import ~/theme-unit-test/themeunittestdata.wordpress.xml
+noroot git clone https://github.com/WPTRT/theme-unit-test.git
+noroot wp import ~/theme-unit-test/themeunittestdata.wordpress.xml
