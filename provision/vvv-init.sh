@@ -6,6 +6,8 @@ echo -e "\nCreating MITlib local WordPress..."
 composer --version
 npm --version
 grunt --version
+composer update
+npm install -g sass
 echo -e "\n========================================================="
 
 # fetch the first host as the primary domain. If none is available, generate a default using the site name
@@ -90,6 +92,7 @@ noroot wp plugin install cpt-onomies
 noroot wp plugin install custom-post-type-ui
 noroot wp plugin install custom-sidebars
 noroot wp plugin install https://github.com/MITLibraries/mitlib-plugin-canary/archive/master.zip --activate
+noroot wp plugin install wordpress-importer --activate
 
 # Contrib themes
 noroot wp theme install twentytwelve --activate
@@ -111,6 +114,6 @@ noroot grunt
 noroot wp theme activate mitlib-courtyard
 
 # Sample content
-cd ~
-noroot git clone https://github.com/WPTRT/theme-unit-test.git
-noroot wp import ~/theme-unit-test/themeunittestdata.wordpress.xml
+cd ${VVV_PATH_TO_SITE}
+git clone https://github.com/WPTRT/theme-unit-test.git ~/theme-unit-test
+noroot wp import ~/theme-unit-test/themeunittestdata.wordpress.xml --authors=create
