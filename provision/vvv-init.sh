@@ -14,7 +14,7 @@ echo -e "\n========================================================="
 DOMAIN=`get_primary_host "${VVV_SITE_NAME}".test`
 SITE_TITLE=`get_config_value 'site_title' "${DOMAIN}"`
 WP_VERSION=`get_config_value 'wp_version' 'latest'`
-WP_TYPE=`get_config_value 'wp_type' "single"`
+WP_TYPE=`get_config_value 'wp_type' "subdirectory"`
 DB_NAME=`get_config_value 'db_name' "${VVV_SITE_NAME}"`
 DB_NAME=${DB_NAME//[\\\/\.\<\>\:\"\'\|\?\!\*-]/}
 
@@ -72,11 +72,37 @@ else
 fi
 
 # Local customization
+
+# Sites
+wp site create --slug=news
+wp site create --slug=docs
+wp site create --slug=council
+wp site list --field=url
+
 # Plugins
 noroot wp plugin delete hello
+echo -e "\n========================================================="
+echo -e "\nActive plugins"
+noroot wp plugin install advanced-custom-fields-pro --activate # Not present?
+noroot wp plugin install classic-editor --activate
+noroot wp plugin install contact-form-7 --activate
+noroot wp plugin install cf7-conditional-fields --activate
+noroot wp plugin install embedit-pro --activate
+noroot wp plugin install media-library-assistant --activate
+noroot wp plugin install wordpress-importer --activate
+noroot wp plugin install widget-importer-exporter --activate
+noroot wp plugin install https://github.com/MITLibraries/mitlib-analytics/archive/master.zip --activate
+noroot wp plugin install https://github.com/MITLibraries/mitlib-cf7-elements/archive/master.zip --activate
+noroot wp plugin install https://github.com/MITLibraries/mitlib-plugin-canary/archive/master.zip --activate
+# Plugins we don't need in local vagrant:
+# - Private debug log
+# - W3 Total Cache
+# - WP Security Audit Log
+
+echo -e "\n========================================================="
+echo -e "\nInactive plugins"
 noroot wp plugin install acf-image-crop-add-on
-noroot wp plugin install acf-location-field-master
-noroot wp plugin install advanced-custom-fields-pro --activate
+noroot wp plugin install acf-location-field-master # Not present?
 noroot wp plugin install add-category-to-pages
 noroot wp plugin install addthis
 noroot wp plugin install advanced-post-types-order
@@ -84,29 +110,42 @@ noroot wp plugin install akismet
 noroot wp plugin install antivirus
 noroot wp plugin install black-studio-tinymce-widget
 noroot wp plugin install category-template-hierarchy
-noroot wp plugin install cf7-conditional-fields
-noroot wp plugin install classic-editor
 noroot wp plugin install cms-tree-page-view
-noroot wp plugin install contact-form-7 --activate
 noroot wp plugin install cpt-onomies
 noroot wp plugin install custom-post-type-ui
 noroot wp plugin install custom-sidebars
-noroot wp plugin install https://github.com/MITLibraries/mitlib-plugin-canary/archive/master.zip --activate
-noroot wp plugin install wordpress-importer --activate
+# These are only partially populated
+
 
 # Contrib themes
 noroot wp theme install twentytwelve --activate
 noroot wp theme delete twentysixteen twentyseventeen twentynineteen
 
 # Custom themes
+# Courtyard
 noroot wp theme install https://github.com/MITLibraries/mitlib-courtyard/archive/1.3.0-beta1.zip
 cd ${VVV_PATH_TO_SITE}/public_html/wp-content/themes/mitlib-courtyard/
 pwd
 noroot npm install
 noroot grunt
 
+# Parent
 noroot wp theme install https://github.com/MITLibraries/MITlibraries-parent/archive/master.zip
 cd ${VVV_PATH_TO_SITE}/public_html/wp-content/themes/MITlibraries-parent/
+pwd
+noroot npm install
+noroot grunt
+
+# Child
+noroot wp theme install https://github.com/MITLibraries/MITlibraries-child/archive/master.zip
+cd ${VVV_PATH_TO_SITE}/public_html/wp-content/themes/MITlibraries-child/
+pwd
+noroot npm install
+noroot grunt
+
+# News
+noroot wp theme install https://github.com/MITLibraries/MITlibraries-news/archive/master.zip
+cd ${VVV_PATH_TO_SITE}/public_html/wp-content/themes/MITlibraries-news/
 pwd
 noroot npm install
 noroot grunt
